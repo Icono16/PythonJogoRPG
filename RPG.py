@@ -14,7 +14,7 @@ player_exp = {
     "current": 0,
     "max" : 100
     }
-# player_spd = int(2)
+player_spd: int = 2
 
 
 ## Player Slots
@@ -29,6 +29,7 @@ evil_id: int = 0
 evil_name: str = "Abubu"
 evil_hp: int = 5
 evil_dmg: int = 1
+evil_spd: int = 1
 evil_LV: int = 1
 
 
@@ -66,7 +67,7 @@ def armour_check():
 
 ## Cycle through current enemy stats
 def evil_check():
-    global evil_id, evil_name, evil_hp, evil_LV, evil_dmg
+    global evil_id, evil_name, evil_hp, evil_LV, evil_dmg, evil_spd
 
     # evil_name =
     # evil_hp =
@@ -79,20 +80,23 @@ def evil_check():
             evil_hp = 5
             evil_dmg = 1
             evil_LV = 1
+            evil_spd = 1
         case 1:
             evil_name = "Slime"
             evil_hp = 3
             evil_dmg = 1
             evil_LV = 1
+            evil_spd = 1
         case 2:
             evil_name = "Moth"
             evil_hp = 2
             evil_dmg = 2
             evil_LV = 1
+            evil_spd = 3
 
 
 ## Developper/Debbug functions
-def exit(x):
+def dexit(x):
     print(f"{x} BREAK")
     sys.exit(0)
 
@@ -102,7 +106,7 @@ GameLoop = True
 turnCount = 0
 in_battle = True
 choice: int = 666
-
+playFirst: bool = True
 
 ## Functions for battling
 def rng(x, y):
@@ -121,6 +125,14 @@ def battle_prep():
         print(f"A level {evil_LV} {evil_name} approaches!")
         print("What will you do? 1 - attack 2 - run")
 
+def turn_order():
+    global player_spd, evil_spd, playFirst
+    if player_spd > evil_spd:
+        playFirst = True
+    else:
+        playFirst = False
+
+
 # def battle_aftermath():
 
 ## Enters umbrella loop of the game
@@ -134,6 +146,7 @@ while GameLoop:
 
             turnCount += 1
 
+            turn_order()
 
             try:
                 choice = int(input())
@@ -144,12 +157,18 @@ while GameLoop:
             if choice == 1:
                 ## Attack
 
-                evil_hp -= player_dmg
-                print(f"You dealt {player_dmg} points of damage.")
+                if playFirst:
+                    evil_hp -= player_dmg
+                    print(f"You dealt {player_dmg} points of damage.")
 
-                player_hp["current"] -= (evil_dmg - player_def)
-                print(f"{evil_dmg - player_def} damage taken.")
+                    player_hp["current"] -= (evil_dmg - player_def)
+                    print(f"{evil_dmg - player_def} damage taken.")
+                elif not playFirst:
+                    player_hp["current"] -= (evil_dmg - player_def)
+                    print(f"{evil_dmg - player_def} damage taken.")
 
+                    evil_hp -= player_dmg
+                    print(f"You dealt {player_dmg} points of damage.")
 
             elif choice == 2:
                 ## Retreat
@@ -169,4 +188,4 @@ while GameLoop:
             ## Player Died
             print("You died")
             in_battle = False
-    exit("GAMELOOP")
+    dexit("GAMELOOP")
