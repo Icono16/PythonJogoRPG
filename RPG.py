@@ -34,7 +34,7 @@ evil_LV: int = 1
 
 
 ## Cycle through player stats "'slot'_check()"
-def level_check():
+def level_check() -> None:
     global player_lv, player_hp, player_dmg, player_def, player_exp
 
     if player_exp["current"] >= player_exp["max"]:
@@ -45,8 +45,7 @@ def level_check():
 
         player_hp["max"] = player_hp["max"] * 2
 
-
-def weapon_check():
+def weapon_check() -> None:
     global player_dmg
 
     match weapon_id:
@@ -55,7 +54,7 @@ def weapon_check():
         case 1:
             player_dmg = 2
 
-def armour_check():
+def armour_check() -> None:
     global player_def
 
     match armour_id:
@@ -66,7 +65,7 @@ def armour_check():
 
 
 ## Cycle through current enemy stats
-def evil_check():
+def evil_check() -> None:
     global evil_id, evil_name, evil_hp, evil_LV, evil_dmg, evil_spd
 
     # evil_name =
@@ -96,7 +95,7 @@ def evil_check():
 
 
 ## Developper/Debbug functions
-def dexit(x):
+def dexit(x) -> str:
     print(f"{x} BREAK")
     sys.exit(0)
 
@@ -109,11 +108,11 @@ choice: int = 666
 playFirst: bool = True
 
 ## Functions for battling
-def rng(x, y):
+def rng(x, y) -> int:
     dice = random.randint(x, y)
     return dice
 
-def battle_prep():
+def battle_prep() -> None:
     global evil_id, turnCount
     if turnCount == 0:
         evil_id = rng(1, 2)
@@ -125,7 +124,7 @@ def battle_prep():
         print(f"A level {evil_LV} {evil_name} approaches!")
         print("What will you do? 1 - attack 2 - run")
 
-def turn_order():
+def turn_order() -> None:
     global player_spd, evil_spd, playFirst
     if player_spd > evil_spd:
         playFirst = True
