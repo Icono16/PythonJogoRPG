@@ -1,6 +1,6 @@
 import random
 import sys
-
+import enemylist
 
 ## Player Stats
 player_lv: int = 1
@@ -22,15 +22,6 @@ weapon_id: int = 0
 armour_id: int = 0
 # second_id = int(0)
 # trinket_id = int(0)
-
-
-## Enemy Stats
-evil_id: int = 0
-evil_name: str = "Abubu"
-evil_hp: int = 5
-evil_dmg: int = 1
-evil_spd: int = 1
-evil_LV: int = 1
 
 
 ## Cycle through player stats "'slot'_check()"
@@ -64,35 +55,6 @@ def armour_check() -> None:
             player_def = 5
 
 
-## Cycle through current enemy stats
-def evil_check() -> None:
-    global evil_id, evil_name, evil_hp, evil_LV, evil_dmg, evil_spd
-
-    # evil_name =
-    # evil_hp =
-    # evil_dmg =
-    # evil_LV =
-
-    match evil_id:
-        case 0:
-            evil_name = "Default"
-            evil_hp = 5
-            evil_dmg = 1
-            evil_LV = 1
-            evil_spd = 1
-        case 1:
-            evil_name = "Slime"
-            evil_hp = 3
-            evil_dmg = 1
-            evil_LV = 1
-            evil_spd = 1
-        case 2:
-            evil_name = "Moth"
-            evil_hp = 2
-            evil_dmg = 2
-            evil_LV = 1
-            evil_spd = 3
-
 
 ## Developper/Debbug functions
 def dexit(x) -> str:
@@ -107,21 +69,30 @@ in_battle = True
 choice: int = 666
 playFirst: bool = True
 
+### todo
+"""
+evil_id
+evil_LV
+evil_name
+evil_check()
+
+"""
+
 ## Functions for battling
 def rng(x, y) -> int:
     dice = random.randint(x, y)
     return dice
 
 def battle_prep() -> None:
-    global evil_id, turnCount
+    global 'evil_id', turnCount
     if turnCount == 0:
         evil_id = rng(1, 2)
 
-        evil_check()
+        ## TODO evil_check()
         weapon_check()
         armour_check()
 
-        print(f"A level {evil_LV} {evil_name} approaches!")
+        print(f"A level {'evil_LV'} {'evil_name'} approaches!")
         print("What will you do? 1 - attack 2 - run")
 
 def turn_order() -> None:
@@ -157,16 +128,16 @@ while GameLoop:
                 ## Attack
 
                 if playFirst:
-                    evil_hp -= player_dmg
+                    'evil_hp' -= player_dmg
                     print(f"You dealt {player_dmg} points of damage.")
 
-                    player_hp["current"] -= (evil_dmg - player_def)
-                    print(f"{evil_dmg - player_def} damage taken.")
+                    player_hp["current"] -= ('evil_dmg' - player_def)
+                    print(f"{'evil_dmg' - player_def} damage taken.")
                 elif not playFirst:
-                    player_hp["current"] -= (evil_dmg - player_def)
-                    print(f"{evil_dmg - player_def} damage taken.")
+                    player_hp["current"] -= ('evil_dmg' - player_def)
+                    print(f"{'evil_dmg' - player_def} damage taken.")
 
-                    evil_hp -= player_dmg
+                    'evil_hp' -= player_dmg
                     print(f"You dealt {player_dmg} points of damage.")
 
             elif choice == 2:
@@ -176,7 +147,7 @@ while GameLoop:
                 turnCount = 0
                 # in_battle = False
 
-            if evil_hp <= 0:
+            if 'evil_hp' <= 0:
                 ## Enemy Died
                 print("You won!")
                 turnCount = 0
